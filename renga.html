@@ -174,7 +174,7 @@
 									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_6.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
 									</div>
 								</p>
-                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает с осями на 3D Виде (в самой модели). Из-за архитектурных особенностей Renga API (оси не имеют 3D-геометрии), скрипт в фоновом режиме выгружает оси во временный IFC-файл в системную папку Temp для точного получения их геометрических координат (точек X, Y). Это позволяет математическому алгоритму безошибочно отличать горизонтальные оси от вертикальных (по дельте длины), а также сортировать их строго по порядку: слева-направо (для вертикальных) и снизу-вверх (для горизонтальных) независимо от порядка их создания или выделения. Новые имена записываются в системный параметр «Обозначение оси». Временный IFC-файл удаляется автоматически.
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает с осями на 3D Виде (в самой модели). Cкрипт в фоновом режиме выгружает оси во временный IFC-файл в системную папку Temp для точного получения их геометрических координат (точек X, Y). Это позволяет математическому алгоритму безошибочно отличать горизонтальные оси от вертикальных (по дельте длины), а также сортировать их строго по порядку: слева-направо (для вертикальных) и снизу-вверх (для горизонтальных) независимо от порядка их создания или выделения. Новые имена записываются в системный параметр «Обозначение оси». Временный IFC-файл удаляется автоматически.
 								<br>Из алфавита строго исключаются недопустимые ГОСТом буквы (Ё, З, Й, О, Ч, Ъ, Ы, Ь).</div>
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                                 <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.9. Замена шрифта текста</h3>
                                 <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Массовая замена настроек шрифта (семейство, размер, стиль) у элемента Текст на выбранных чертежах (листах).
 <div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_11.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
-                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только с элементом Текст на чертеже. Он перебирает выделенные пользователем листы, находит все тексты и заменяет им параметры. *Примечание: шрифты внутри Спецификаций, Таблиц, Рамок (штампов) и Меток не заменяются из-за ограничений архитектуры Renga API.</div>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только с элементом Текст на чертеже. Он перебирает выделенные пользователем листы, находит все тексты и заменяет им параметры. *Примечание: шрифты внутри Спецификаций, Таблиц, Рамок (штампов) и Меток не заменяются.</div>
                             </div>
                         </div>
                         <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
@@ -305,7 +305,7 @@
                                 <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Управление уровнями проекта (скрыть, показать, изолировать, выбрать, закрепить).
 <div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_18.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
                                 <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт собирает все уровни модели в удобную таблицу. Позволяет массово или единично закреплять уровни от случайных изменений. Кнопки управления видимостью работают напрямую с активным 3D видом, скрывая или показывая физические объекты. Окно не блокирует работы программы Renga.
-<br>❗ Из-за ограничений Renga API редактирование отметки уровня заблокировано.</div>
+<br>❗ Редактирование отметки уровня заблокировано.</div>
                             </div>
                         </div>
                         <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
