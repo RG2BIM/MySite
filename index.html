@@ -1,11 +1,353 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth scroll-pt-32">
 <head>
     <meta charset="UTF-8">
-    <title>Мой первый сайт</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RG2BIM | Рутина в рабочих процессах</title><!-- Resource Gateway to BIM -->
+    <!-- Tailwind CSS via CDN --> 
+    <script src="libs/tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121214',
+                        darkCard: '#1a1a1e',
+                        accentRevit: '#00d2ff',
+                        accentRenga: '#ff6b4a',
+                        accentPython: '#ffd43b',
+                        accentIfc: '#00f5d4',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Courier New', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Подключение шрифтов (Outfit и Inter, оба до 900 weight для кириллицы) -->
+    <link href="fonts/fonts.css" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="libs/lucide.js"></script>
+    <style>
+        
+        .neon-glow-main {
+            box-shadow: 0 0 30px -5px rgba(0, 210, 255, 0.25), 0 0 30px -5px rgba(255, 107, 74, 0.25);
+        }
+        :not(.dark) .tab-active { background-color: #e4e4e7; color: #18181b; border-color: #d4d4d8; }
+        .tab-active {
+            background-color: #27272a;
+            color: #ffffff;
+            border-color: #3f3f46;
+        }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
 </head>
-<body>
-    <h1>Ура! Мой сайт на GitHub работает!</h1>
-    <p>Привет из репозитория Project.</p>
+<body class="font-sans antialiased selection:bg-accentRevit/30 selection:text-white flex flex-col min-h-screen bg-zinc-50 dark:bg-darkBg text-zinc-900 dark:text-zinc-300">
+
+                        <!-- ХЕДЕР -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-50/80 dark:bg-darkBg/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-20 h-20 flex items-center justify-center group-hover:scale-[0.98] transition-transform -ml-2">
+                    <img src="images/logo.png" alt="NR Logo" class="w-full h-full object-contain drop-shadow-md">
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wider text-zinc-900 dark:text-white">RG2BIM</span>
+                    <span class="block text-3xs text-zinc-500 font-mono tracking-widest">// BY @0RinRU</span>
+                </div>
+            </a>
+
+            <!-- Навигационные вкладки -->
+            <nav class="hidden xl:flex space-x-1 bg-zinc-100 dark:bg-zinc-900/60 p-1 rounded-full border border-zinc-200 dark:border-zinc-800/50">
+                <a href="index.html" class="px-4 py-2 text-sm font-medium rounded-full tab-active">Главная</a>
+                <a href="revit.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">SMP Renga</a>
+                <a href="renga.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Python/VBA</a>
+                <a href="portal.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Portal RKV</a>
+                <a href="other.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Прочее</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-300 dark:border-zinc-700">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                <a href="mailto:nruslan2@yandex.ru" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+
+            <!-- Мобильное Меню Кнопка -->
+            <div class="xl:hidden">
+                <button id="mobile-menu-btn" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное выпадающее меню -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-zinc-50 dark:bg-darkBg border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-4 space-y-2">
+            <a href="index.html" class="block w-full px-4 py-2 rounded-lg text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-800">Главная</a>
+            <a href="revit.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">pyRevit Revit</a>
+            <a href="smp.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">SMP Renga</a>
+            <a href="renga.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Scripts for SMP</a>
+            <a href="python.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Python/VBA</a>
+            <a href="portal.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Portal RKV</a>
+            <a href="other.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Прочее</a>
+        </div>
+    </header>
+
+    <div class="h-20"></div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-4">
+        <!-- Hero Секция -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+                <div class="lg:col-span-7">
+                    <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-3">// BIM AUTOMATION & EFFICIENCY</span>
+                    <h1 class="text-4xl sm:text-5xl font-black text-zinc-900 dark:text-white mb-6">
+                        Рутина в<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-accentRevit via-accentIfc to-accentRenga">рабочих процессах</span>
+                    </h1>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg mb-8 leading-relaxed">
+                        Привет! Меня зовут <strong>Руслан Н.</strong><br> Я не люблю повторяющиеся однотипные действия, поэтому я люблю автоматизацию, которая избавляет от рутины!
+						<br>На этом сайте собрано описание моих автоматизации для повышения производительности: программы на Python и VBA, плагины для Revit и Renga.
+                    </p>
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 relative group neon-glow">
+                        <img src="images/main_banner.png" alt="NR2BIM Main Banner" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-zinc-950/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-lg">
+                            <span class="text-xs font-mono text-zinc-600 dark:text-zinc-400 block">// BIM AUTOMATION & EFFICIENCY</span>
+                            <span class="text-2xs text-zinc-500 font-mono">Добро пожаловать!!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Направления разработки -->
+        <section class="mb-4">
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-10 flex items-center gap-3">
+                <span class="w-2 h-6 bg-gradient-to-b from-accentRevit to-accentRenga rounded-full"></span>
+                Направления автоматизации
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Revit -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors">Плагины Revit (pyRevit)</h3>
+                            <span class="text-accentRevit"><i data-lucide="box" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Плагины для облегчения работы специалистов при работе с цифровыми информационными моделями в среде AutoDesk Revit 2023 и выше.
+							<br>
+							Плагины основаны на бесплатный открытый фреймворк pyRevit, предназначенный для быстрой автоматизации и создания собственных инструментов с использованием языка Python.
+                        </p>
+                    </div>
+                    <a href="revit.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-accentRevit hover:underline gap-1">
+                        Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- SMP Renga -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRenga/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRenga transition-colors">ScriptManagerPlugin (SMP)</h3>
+                            <span class="text-accentRenga"><i data-lucide="settings" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Специальный плагин-менеджер для Renga, который позволяет создавать собственные плагины минуя все промежуточные шаги связанные с компиляции файлов DLL, настроек графического интерфейса в коде и бесконечные перезапуском программы при тестировании.
+							<br>
+							Вы просто создаете папки и кладете туда свои скрипты C# сохраненные в обычном блокноте.
+                        </p>
+                    </div>
+                    <a href="smp.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-accentRenga hover:underline gap-1">
+                        Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Renga -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors">Скрипты SMP Renga (C#)</h3>
+                            <span class="text-red-500"><i data-lucide="cpu" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Скрипты на писанные на языке C# и подключаемые к программе Renga через специальный плагин-менеджер ScriptManagerPlugin (SMP).
+                        </p>
+                    </div>
+                    <a href="renga.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-red-500 hover:underline gap-1">
+                        Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Python -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentPython/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentPython transition-colors">Программы на Python/VBA</h3>
+                            <span class="text-accentPython"><i data-lucide="terminal" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Вспомогательные программы, скрипты написанные на Python или Excel VBA для автоматизации рутинных процессов и повышения производительности инженеров в проектном офисе.
+                        </p>
+                    </div>
+                    <a href="python.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-accentPython hover:underline gap-1">
+                        Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+
+                <!-- Portal RKV -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-zinc-600 transition-colors">Portal Ruko</h3>
+                            <span class="text-zinc-600 dark:text-zinc-400"><i data-lucide="globe" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Немного о корпоративный портал системы управления проектного института МЭИ, который используется каждый день для координации деятельности отделов в институте.
+                        </p>
+                    </div>
+                    <a href="portal.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-zinc-400 hover:underline gap-1">
+                        ПОДРОБНЕЕ <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Прочее -->
+                <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors">Прочее</h3>
+                            <span class="text-accentIfc"><i data-lucide="layers" class="w-6 h-6"></i></span>
+                        </div>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                            Различные дополнительные материалы, не вошедшие в основные разделы.
+                        </p>
+                    </div>
+                    <a href="other.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-accentIfc hover:underline gap-1">
+                        Подробнее <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- КОНТАКТЫ -->
+    <section id="contact-section" class="bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-900 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-darkCard px-6 py-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center gap-4 w-full md:w-auto">
+                    <span class="p-2.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-accentIfc"><i data-lucide="mail" class="w-5 h-5"></i></span>
+                    <div>
+                        <div class="text-zinc-500 text-2xs font-mono uppercase">// EMAIL</div>
+                        <a href="mailto:nruslan2@yandex.ru"  class="text-zinc-900 dark:text-white hover:text-accentIfc font-semibold transition-colors">nruslan2@yandex.ru</a>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-darkCard px-6 py-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center gap-4 w-full md:w-auto">
+                    <span class="p-2.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-accentRevit"><i data-lucide="send" class="w-5 h-5"></i></span>
+                    <div>
+                        <div class="text-zinc-500 text-2xs font-mono uppercase">// TELEGRAM</div>
+                        <a href="https://t.me/0RinRU" target="_blank" class="text-zinc-900 dark:text-white hover:text-accentRevit font-semibold transition-colors">@0RinRU</a>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-darkCard px-6 py-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center gap-4 w-full md:w-auto">
+                    <span class="p-2.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-900 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></span>
+                    <div>
+                        <div class="text-zinc-500 text-2xs font-mono uppercase">// GITHUB</div>
+                        <a href="https://github.com/RG2BIM" target="_blank" class="text-zinc-900 dark:text-white hover:text-zinc-500 font-semibold transition-colors">RG2BIM</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ФУТЕР -->
+        <footer class="bg-zinc-50 dark:bg-darkBg border-t border-zinc-200 dark:border-zinc-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-zinc-500 text-xs font-mono">// &copy; 2026 RG2BIM. @0RinRU</span>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-zinc-500 dark:text-zinc-400 text-xs font-mono">
+                <a href="index.html" class="text-zinc-900 dark:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="hover:text-accentRevit transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="hover:text-accentRenga transition-colors">SMP Renga</a>
+                <a href="renga.html" class="hover:text-red-500 transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="hover:text-accentPython transition-colors">Python/VBA</a>
+                <a href="portal.html" class="hover:text-zinc-800 dark:hover:text-zinc-500 transition-colors">Portal RKV</a>
+                <a href="other.html" class="hover:text-accentIfc transition-colors">Прочее</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+    </script>
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            if(window.lucide) { lucide.createIcons(); }
+        }
+        
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.theme = 'dark';
+                } else {
+                    localStorage.theme = 'light';
+                }
+                updateThemeIcon();
+            });
+            updateThemeIcon();
+        }
+    </script>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-zinc-900/90 dark:bg-black/90 hidden flex items-center justify-center p-4 cursor-pointer backdrop-blur-sm transition-opacity" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl border border-zinc-700">
+    </div>
+    <script>
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+    </script>
+
 </body>
 </html>

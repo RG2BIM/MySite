@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth scroll-pt-32">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMP Renga | RG2BIM</title>
+    <link href="fonts/fonts.css" rel="stylesheet">
+    <script src="libs/tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121214',
+                        darkCard: '#1a1a1e',
+                        accentRevit: '#00d2ff',
+                        accentRenga: '#ff6b4a',
+                        accentPython: '#ffd43b',
+                        accentIfc: '#00f5d4',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Courier New', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <script src="libs/lucide.js"></script>
+    <style>
+        body { background-color: #fafafa; color: #18181b; }
+        .dark body { background-color: #121214; color: #e4e4e7; }
+        .neon-glow-renga { box-shadow: 0 0 30px -5px rgba(255, 107, 74, 0.3); }
+        .tab-active { background-color: #27272a; color: #ffffff; border-color: #3f3f46; }
+        :not(.dark) .tab-active { background-color: #e4e4e7; color: #18181b; border-color: #d4d4d8; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="font-sans antialiased selection:bg-accentRevit/30 selection:text-zinc-900 dark:text-white flex flex-col min-h-screen">
+
+                        <!-- ХЕДЕР -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-50/80 dark:bg-darkBg/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-20 h-20 flex items-center justify-center group-hover:scale-[0.98] transition-transform -ml-2">
+                    <img src="images/logo.png" alt="NR Logo" class="w-full h-full object-contain drop-shadow-md">
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wider text-zinc-900 dark:text-white">RG2BIM</span>
+                    <span class="block text-3xs text-zinc-500 font-mono tracking-widest">// BY @0RinRU</span>
+                </div>
+            </a>
+
+            <!-- Навигационные вкладки -->
+            <nav class="hidden xl:flex space-x-1 bg-zinc-100 dark:bg-zinc-900/60 p-1 rounded-full border border-zinc-200 dark:border-zinc-800/50">
+                <a href="index.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="px-4 py-2 text-sm font-medium rounded-full tab-active">SMP Renga</a>
+                <a href="renga.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Python/VBA</a>
+                <a href="portal.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Portal RKV</a>
+                <a href="other.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Прочее</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-300 dark:border-zinc-700">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                <a href="mailto:nruslan2@yandex.ru" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+
+            <!-- Мобильное Меню Кнопка -->
+            <div class="xl:hidden">
+                <button id="mobile-menu-btn" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное выпадающее меню -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-zinc-50 dark:bg-darkBg border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-4 space-y-2">
+            <a href="index.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Главная</a>
+            <a href="revit.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">pyRevit Revit</a>
+            <a href="smp.html" class="block w-full px-4 py-2 rounded-lg text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-800">SMP Renga</a>
+            <a href="renga.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Scripts for SMP</a>
+            <a href="python.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Python/VBA</a>
+            <a href="portal.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Portal RKV</a>
+            <a href="other.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Прочее</a>
+        </div>
+    </header>
+
+    <div class="h-20"></div>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Hero Секция -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+                <div class="lg:col-span-7">
+                    <span class="text-xs font-mono tracking-widest text-accentRenga uppercase block mb-3">// SCRIPT MANAGER PLUGIN FOR RENGA</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white mb-6">
+                        ScriptManagerPlugin<br>(SMP Renga)
+                    </h1>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg mb-8 max-w-2xl">
+                        Инструментальный менеджер скриптов для BIM-системы Renga 9.1 и выше. Позволяет создавать кнопки, контекстные меню и выпадающие списки без перекомпиляции плагина — скрипты C# компилируются "на лету" при каждом запуске.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://github.com/RG2BIM/ScriptManagerPlugin" target="_blank" class="px-6 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold flex items-center gap-2 transition-all shadow-lg shadow-green-500/20">
+                            <i data-lucide="download" class="w-5 h-5"></i> Скачать
+                        </a>
+                        <a href="renga.html" class="px-6 py-3 rounded-lg bg-accentRenga hover:bg-opacity-90 text-black font-semibold flex items-center gap-2 group transition-all">
+                            Скрипты для SMP (Renga) <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 relative group neon-glow-renga">
+                        <img src="images/smp_banner.png" alt="Script Manager Plugin" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                        <div class="absolute bottom-4 left-4 right-4 bg-white dark:bg-zinc-950/80 backdrop-blur-md border border-accentRenga/20 p-3 rounded-lg">
+                            <span class="text-xs font-mono text-accentRenga block">// SCRIPT MANAGER PLUGIN FOR RENGA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Описание плагина -->
+        <section class="mb-16 space-y-12">
+            <!-- Основные плюсы плагина -->
+            <div>
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5 text-accentRenga"></i> Основные плюсы плагина</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Point 1 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="zap" class="w-5 h-5"></i> Мгновенное тестирование кода (Hot Reload)</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Технология «горячей перезагрузки» позволяет проверять работу скрипта сразу после сохранения текстового файла, избавляя от изнурительной необходимости каждый раз перезапускать саму Renga и заново открывать проект для тестирования одной строчки кода.
+                        </p>
+                    </div>
+                    <!-- Point 2 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="folder-tree" class="w-5 h-5"></i> Динамическое построение интерфейса</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Разработчику больше не нужно тратить время на сложное программирование элементов управления — плагин автоматически превращает обычные папки на вашем компьютере в красивые кнопки, выпадающие списки и контекстные меню на панели инструментов программы.
+                        </p>
+                    </div>
+                    <!-- Point 3 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="shield-check" class="w-5 h-5"></i> Безопасность и стабильность</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            В отличие от скомпилированных DLL-плагинов, которые при ошибке могут «уронить» всю программу и привести к потере данных, Script Manager изолирует ошибки скриптов, выводя их в консоль, при этом сама Renga продолжает стабильно работать.
+                        </p>
+                    </div>
+                    <!-- Point 4 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="rocket" class="w-5 h-5"></i> Снижение порога входа для новичков</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Плагин полностью избавляет пользователя от необходимости устанавливать громоздкие среды разработки (например, Visual Studio), изучать шаблоны проектов и разбираться с настройкой компилятора — писать код можно даже в стандартном Блокноте.
+                        </p>
+                    </div>
+                    <!-- Point 5 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="bot" class="w-5 h-5"></i> Идеальная синергия с ИИ</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Формат простых текстовых скриптов позволяет использовать ChatGPT или Gemini в режиме «вайбкодинга» — вы просто копируете предложенный нейросетью код, тут же тестируете его и просите ИИ исправить ошибку, не отвлекаясь на технические сложности сборки.
+                        </p>
+                    </div>
+                    <!-- Point 6 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="cpu" class="w-5 h-5"></i> Готовый контекст выполнения</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Плагин самостоятельно инициализирует все необходимые базовые переменные (например, RengaApp для доступа к текущему проекту) и предоставляет готовую функцию логирования Print, позволяя инженеру с первой же строки кода сосредоточиться на решении своей конкретной задачи.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Как это работает -->
+            <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="folder-tree" class="w-5 h-5 text-accentRenga"></i> Структура папок</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 mb-6">
+                    Плагин автоматически сканирует папку <code>Scripts</code> и строит интерфейс Renga на основе найденных директорий:
+                </p>
+                <ul class="space-y-3 font-mono text-sm text-zinc-700 dark:text-zinc-300">
+                    <li><span class="text-accentRenga">*.button</span> — Одиночная кнопка (выполняет скомпилированный код).</li>
+                    <li><span class="text-accentRenga">*.folder</span> — Выпадающий список или подменю.</li>
+                    <li><span class="text-accentRenga">*.context</span> — Корневое меню по правому клику мыши.</li>
+                    <li><span class="text-accentRenga">*.actions</span> — Панель действий Renga при выделении объектов.</li>
+                </ul>
+            </div>
+
+            <!-- Настройки внешнего вида -->
+            <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="settings" class="w-5 h-5 text-accentRenga"></i> Настройки внешнего вида (config.json)</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 mb-6">
+                    В каждой папке вы можете создать файл конфигурации в формате UTF-8 для управления отображением кнопок, подсказок и областей видимости.
+                </p>
+                <div class="bg-white dark:bg-zinc-950 p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-sm text-zinc-700 dark:text-zinc-300">
+                    <pre>{
+  "Title": "Моя Кнопка",
+  "ToolTip": "Развернутое описание того, что делает эта кнопка",
+  "ViewType": "View3D",
+  "ShowCase": "Scene"
+}</pre>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-sm text-zinc-600 dark:text-zinc-400">
+                    <div>
+                        <strong class="text-zinc-900 dark:text-white block mb-1">ViewType (Окна отображения):</strong>
+                        <code>Undefined</code> (Везде), <code>View3D</code> (3D Вид), <code>Drawing</code> (Чертеж), <code>Specification</code> (Спецификация), <code>ProjectExplorer</code> (Обозреватель).
+                    </div>
+                    <div>
+                        <strong class="text-zinc-900 dark:text-white block mb-1">ShowCase (Режим контекстного меню):</strong>
+                        <code>Selection</code> (при клике на выделенный объект), <code>Scene</code> (при клике на свободную область).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Варианты написания скриптов -->
+            <div>
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2 px-8"><i data-lucide="file-code-2" class="w-5 h-5 text-accentRenga"></i> Варианты написания скриптов</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Вариант 1 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="terminal" class="w-4 h-4"></i> Вариант 1. Простой скрипт</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4">
+                            Идеально для быстрых автоматизаций. Код пишется без объявления классов. Неявные using-инструкции подключены автоматически.
+                        </p>
+                        <div class="bg-white dark:bg-zinc-950 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-700 dark:text-zinc-300 overflow-x-auto">
+                            <pre class="whitespace-pre-wrap break-words">using System.Windows.Forms;
+if (RengaApp.Project != null) {
+    Print("Работает!");
+    string pName = RengaApp.Project.ProjectInfo.Name;
+    MessageBox.Show($"Открыт проект: {pName}");
+}</pre>
+                        </div>
+                    </div>
+
+                    <!-- Вариант 2 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                        <h3 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center gap-2 text-accentRenga"><i data-lucide="code-2" class="w-4 h-4"></i> Вариант 2. Скрипт на классах</h3>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4">
+                            Для сложных, многофайловых скриптов с поддержкой IntelliSense. Плагин компилирует скрипт как полноценную изолированную сборку.
+                        </p>
+                        <div class="bg-white dark:bg-zinc-950 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-700 dark:text-zinc-300 overflow-x-auto">
+                            <pre class="whitespace-pre-wrap break-words">using Renga;
+namespace MyScripts {
+    public class MyCommand {
+        public void Execute(
+            IApplication RengaApp, 
+            Action&lt;string&gt; Print) 
+        {
+            Print("Выполнено из C# класса!");
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Безопасность и оптимизация -->
+            <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="shield-alert" class="w-5 h-5 text-accentRenga"></i> Фоновые задачи и STA-ограничения</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    Renga API является однопоточным (STA). Вызов методов API напрямую из фонового потока запрещен. Плагин предоставляет безопасный метод <code>SafeTask</code> / <code>SafeTaskWithUI</code> и <code>RunUI</code> для расчетов в фоне с выводом в поток интерфейса.
+                </p>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    Все сборки компилируются в изолированном контексте <strong>CollectibleAssemblyLoadContext (.NET 8)</strong>, благодаря чему старые версии скриптов автоматически выгружаются из памяти при изменении кода на диске.
+                </p>
+            </div>
+        </section>
+    
+            <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 mt-8">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="info" class="w-5 h-5 text-accentRenga"></i> Особенности компиляции и кэширования</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    Плагин SMP использует технологию Roslyn для динамической компиляции C# кода "на лету" без остановки работы Renga. Скомпилированные сборки кэшируются в памяти через <code class="bg-zinc-100 dark:bg-zinc-900 px-1 rounded">CollectibleAssemblyLoadContext</code> (.NET Core / .NET 8). 
+                </p>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    При внесении изменений в файл скрипта на диске, SMP автоматически обнаруживает изменения, выгружает старую сборку из памяти и компилирует новую. Это позволяет вести разработку скриптов в Visual Studio Code или Notepad++ прямо во время работы Renga!
+                </p>
+                <ul class="list-disc pl-5 space-y-2 text-zinc-600 dark:text-zinc-400 text-sm mt-4">
+                    <li>Автоматическое подключение пространств имен Renga API.</li>
+                    <li>Поддержка разделения на папки (меню и подменю).</li>
+                    <li>Возможность задавать контекст видимости кнопки (3D вид, чертеж, спецификация).</li>
+                    <li>Встроенные методы для вывода логов и сообщений без блокировки UI.</li>
+                </ul>
+            </div>
+            
+                <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 mt-8">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="bug" class="w-5 h-5 text-accentRenga"></i> Отладка и вывод информации</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    SMP предоставляет встроенный метод <code>Print(string message)</code>, который перенаправляет ваш текст напрямую в <strong>Окно сообщений Renga</strong>. 
+                    Это позволяет отлаживать скрипты и информировать пользователя о статусе расчетов без зависаний интерфейса и модальных окон <code>MessageBox</code>.
+                </p>
+                <div class="bg-white dark:bg-zinc-950 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-700 dark:text-zinc-300">
+                    <pre>public void Execute(IApplication RengaApp, Action&lt;string&gt; Print) {
+    Print("Начинаем расчет...");
+    // ... ваш код ...
+    Print("Готово! Обработано 150 элементов.");
+}</pre>
+                </div>
+            </div>
+
+            <!-- Загрузка скриптов по сети -->
+            <div class="bg-white dark:bg-darkCard p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 mt-8">
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="cloud-download" class="w-5 h-5 text-accentRenga"></i> Загрузка скриптов по сети (Remote Scripts)</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">
+                    Плагин поддерживает гибридный режим работы: он может загружать исполняемый код <code>C#</code> напрямую с удаленного сервера. Данный функционал избавляет от необходимости распространять файлы с кодом локально и предотвращает возможность утечки исходного кода скриптов.
+                </p>
+
+                <h3 class="text-lg font-bold text-zinc-900 dark:text-white mt-6 mb-3">Как это работает:</h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-zinc-800 dark:text-zinc-200">1. Веб-сервер с доступом к локальной сети.</h4>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">При ошибках обращения к серверу плагин покажет соответствующее системные уведомления с ошибкой.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-zinc-800 dark:text-zinc-200">2. Локальная папка-пустышка.</h4>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">Папка располагается на локальном компьютере в папке Script и содержит только: 
+							<br>• файл иконку - <code>icon.png</code>
+							<br>• файл описания плагина - <code>config.json</code>  
+							<br>• файл для загрузки данных с сервера<code>remote_files.json</code>) 
+						</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-zinc-800 dark:text-zinc-200">3. Файлы-скрипты на сервере.</h4>
+                        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">На веб-сервере создается папка <code>SMPRenga</code>, в которой воспроизводится структура папок скриптов с самими скриптами.</p></p>
+                    </div>
+                </div>
+
+            </div>
+</main>
+
+    <!-- ФУТЕР -->
+        <footer class="bg-zinc-50 dark:bg-darkBg border-t border-zinc-200 dark:border-zinc-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-zinc-500 text-xs font-mono">// &copy; 2026 RG2BIM. @0RinRU</span>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-zinc-500 dark:text-zinc-400 text-xs font-mono">
+                <a href="index.html" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="hover:text-accentRevit transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="text-accentRenga transition-colors">SMP Renga</a>
+                <a href="renga.html" class="hover:text-red-500 transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="hover:text-accentPython transition-colors">Python/VBA</a>
+                <a href="portal.html" class="hover:text-zinc-800 dark:hover:text-zinc-500 transition-colors">Portal RKV</a>
+                <a href="other.html" class="hover:text-accentIfc transition-colors">Прочее</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+    </script>
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            if(window.lucide) { lucide.createIcons(); }
+        }
+        
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.theme = 'dark';
+                } else {
+                    localStorage.theme = 'light';
+                }
+                updateThemeIcon();
+            });
+            updateThemeIcon();
+        }
+    </script>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-zinc-900/90 dark:bg-black/90 hidden flex items-center justify-center p-4 cursor-pointer backdrop-blur-sm transition-opacity" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl border border-zinc-700">
+    </div>
+    <script>
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth scroll-pt-32">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прочее | RG2BIM</title>
+    <link href="fonts/fonts.css" rel="stylesheet">
+    <script src="libs/tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121214',
+                        darkCard: '#1a1a1e',
+                        accentRevit: '#00d2ff',
+                        accentRenga: '#ff6b4a',
+                        accentPython: '#ffd43b',
+                        accentIfc: '#00f5d4',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Courier New', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <script src="libs/lucide.js"></script>
+    <style>
+        body { background-color: #fafafa; color: #18181b; }
+        .dark body { background-color: #121214; color: #e4e4e7; }
+        .neon-glow-ifc { box-shadow: 0 0 30px -5px rgba(255, 107, 74, 0.3); }
+        .tab-active { background-color: #27272a; color: #ffffff; border-color: #3f3f46; }
+        :not(.dark) .tab-active { background-color: #e4e4e7; color: #18181b; border-color: #d4d4d8; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="font-sans antialiased selection:bg-accentRevit/30 selection:text-zinc-900 dark:text-white flex flex-col min-h-screen">
+
+                        <!-- ХЕДЕР -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-50/80 dark:bg-darkBg/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-20 h-20 flex items-center justify-center group-hover:scale-[0.98] transition-transform -ml-2">
+                    <img src="images/logo.png" alt="NR Logo" class="w-full h-full object-contain drop-shadow-md">
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wider text-zinc-900 dark:text-white">RG2BIM</span>
+                    <span class="block text-3xs text-zinc-500 font-mono tracking-widest">// BY @0RinRU</span>
+                </div>
+            </a>
+
+            <!-- Навигационные вкладки -->
+            <nav class="hidden xl:flex space-x-1 bg-zinc-100 dark:bg-zinc-900/60 p-1 rounded-full border border-zinc-200 dark:border-zinc-800/50">
+                <a href="index.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">SMP Renga</a>
+                <a href="renga.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Python/VBA</a>
+                <a href="portal.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Portal RKV</a>
+                <a href="other.html" class="px-4 py-2 text-sm font-medium rounded-full tab-active">Прочее</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-300 dark:border-zinc-700">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                <a href="mailto:nruslan2@yandex.ru" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+
+            <!-- Мобильное Меню Кнопка -->
+            <div class="xl:hidden">
+                <button id="mobile-menu-btn" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное выпадающее меню -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-zinc-50 dark:bg-darkBg border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-4 space-y-2">
+            <a href="index.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Главная</a>
+            <a href="revit.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">pyRevit Revit</a>
+            <a href="smp.html" class="block w-full px-4 py-2 rounded-lg text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-800">SMP Renga</a>
+            <a href="renga.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Scripts for SMP</a>
+            <a href="python.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Python/VBA</a>
+            <a href="portal.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Portal RKV</a>
+            <a href="other.html" class="block w-full px-4 py-2 rounded-lg text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-800">Прочее</a>
+        </div>
+    </header>
+
+    <div class="h-20"></div>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Hero Секция -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+                <div class="lg:col-span-7">
+                    <span class="text-xs font-mono tracking-widest text-accentIfc uppercase block mb-3">// MISCELLANEOUS</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white mb-6">
+                        Прочее
+                    </h1>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg mb-8 max-w-2xl">
+                        Различные дополнительные материалы, полезные и не очень, не вошедшие в основные разделы.
+                    </p>
+                    
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 relative group neon-glow-ifc">
+                        <img src="images/ifc_banner.png" alt="Script Manager Plugin" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                        <div class="absolute bottom-4 left-4 right-4 bg-white dark:bg-zinc-950/80 backdrop-blur-md border border-accentIfc/20 p-3 rounded-lg">
+                            <span class="text-xs font-mono text-accentIfc block">// Прочее</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Контент страницы -->
+        <section class="mb-16 space-y-12">
+            <!-- Раздел Литература -->
+            <div>
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2"><i data-lucide="book-open" class="w-5 h-5 text-accentIfc"></i> Литература</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Книга 1 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="mb-4 aspect-[3/4] w-full max-w-[160px] mx-auto rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shadow-md">
+                                <img src="images/book_120.png" alt="120 особенностей и лайфхаков работы в Renga" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors mb-2 text-center md:text-left">120+ особенностей и лайфхаков работы в Renga</h3>
+                            <p class="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-4 text-center md:text-left">Р.И. Нурмухаметов</p>
+                            <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                                Сборник практических советов, неочевидных приемов и обходных путей для продвинутых пользователей Renga, желающих ускорить свою работу и избежать частых ошибок.
+                            </p>
+                        </div>
+                        <a href="https://www.litres.ru/book/ruslan-ilsurovich-nurmuhametov/120-osobennostey-i-layfhakov-raboty-v-renga-69711151/" target="_blank" class="inline-flex items-center justify-center px-4 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-accentIfc hover:text-black text-sm font-medium rounded-lg transition-colors border border-zinc-200 dark:border-zinc-700 hover:border-transparent gap-2 w-full mt-auto">
+                            <i data-lucide="external-link" class="w-4 h-4"></i> Читать на ЛитРес
+                        </a>
+                    </div>                    
+                    <!-- Книга 2 -->
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="mb-4 aspect-[3/4] w-full max-w-[160px] mx-auto rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 shadow-md">
+                                <img src="images/book_renga_shag.png" alt="Renga шаг за шагом" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors mb-2 text-center md:text-left">Renga: шаг за шагом</h3>
+                            <p class="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-4 text-center md:text-left">Р.И. Нурмухаметов, Т.А. Тимошенко, Б.Б. Турутин</p>
+                            <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-6">
+                                Подробное руководство по освоению BIM-системы Renga с нуля. От базовых принципов до создания полноценной информационной модели.
+                            </p>
+                        </div>
+                        <a href="https://www.litres.ru/book/b-b-turutin/renga-shag-za-shagom-72951532/" target="_blank" class="inline-flex items-center justify-center px-4 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-accentIfc hover:text-black text-sm font-medium rounded-lg transition-colors border border-zinc-200 dark:border-zinc-700 hover:border-transparent gap-2 w-full mt-auto">
+                            <i data-lucide="external-link" class="w-4 h-4"></i> Читать на ЛитРес
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Раздел Музыка -->
+            <div>
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2"><i data-lucide="music" class="w-5 h-5 text-accentIfc"></i> Музыка, сгенерированная ИИ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Про будни БИМ специалиста (Изначальная)">Про будни БИМ специалиста (Изначальная)</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Про будни БИМ специалиста (Изначальная).mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Про будни БИМ специалиста (Итоговая)">Про будни БИМ специалиста (Итоговая)</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Про будни БИМ специалиста (Итоговая).mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Про NanoCad">Про NanoCad</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Про NanoCad.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Я люблю свою работу, но я не бессмертный пони">Я люблю свою работу, но я не бессмертный пони</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Я люблю свою работу, но я не бессмертный пони.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Мы живём один раз Без черновиков">Мы живём один раз "Без черновиков"</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Мы живём один раз Без черновиков.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Творец среди людей - про ИИ">Творец среди людей (про ИИ)</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Творец среди людей (про ИИ).mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="У нейросети дуб зеленый">У нейросети дуб зеленый</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/У нейросети дуб зеленый.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+					
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Про постановку задач">Про постановку задач</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Про постановку задач.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+					
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="В доме Алиса и Салют живут">В доме Алиса и Салют живут</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/В доме Алиса и Салют живут.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Две колонки не спят">Две колонки не спят</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Две колонки не спят.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="Две искры ума">Две искры ума</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/Две искры ума.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentIfc/50 transition-all duration-300 flex flex-col justify-between group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i data-lucide="radio" class="w-6 h-6 text-zinc-500 dark:text-white group-hover:text-accentIfc transition-colors"></i>
+                            </div>
+                            <h3 class="text-md font-bold text-zinc-900 dark:text-white group-hover:text-accentIfc transition-colors line-clamp-2 leading-tight" title="А.С.Пушкин У лукоморья дуб зелёный">А.С.Пушкин "У лукоморья дуб зелёный"</h3>
+                        </div>
+                        <audio controls class="w-full mt-auto h-10 outline-none">
+                            <source src="music/А.С.Пушкин У лукоморья дуб зелёный.mp3" type="audio/mpeg">
+                            Ваш браузер не поддерживает аудио элемент.
+                        </audio>
+                    </div>
+					
+                </div>
+            </div>
+</section>
+</main>
+
+    <!-- ФУТЕР -->
+        <footer class="bg-zinc-50 dark:bg-darkBg border-t border-zinc-200 dark:border-zinc-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-zinc-500 text-xs font-mono">// &copy; 2026 RG2BIM. @0RinRU</span>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-zinc-500 dark:text-zinc-400 text-xs font-mono">
+                <a href="index.html" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="hover:text-accentRevit transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="hover:text-accentRenga transition-colors">SMP Renga</a>
+                <a href="renga.html" class="hover:text-red-500 transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="hover:text-accentPython transition-colors">Python/VBA</a>
+                <a href="portal.html" class="hover:text-zinc-800 dark:hover:text-zinc-500 transition-colors">Portal RKV</a>
+                <a href="other.html" class="text-accentIfc transition-colors">Прочее</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                document.getElementById('menu-icon').setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+    </script>
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            if(window.lucide) { lucide.createIcons(); }
+        }
+        
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.theme = 'dark';
+                } else {
+                    localStorage.theme = 'light';
+                }
+                updateThemeIcon();
+            });
+            updateThemeIcon();
+        }
+    </script>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-zinc-900/90 dark:bg-black/90 hidden flex items-center justify-center p-4 cursor-pointer backdrop-blur-sm transition-opacity" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl border border-zinc-700">
+    </div>
+    <script>
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+    </script>
+    <!-- Аудио-контроллер: пауза остальных треков при запуске одного -->
+    <script>
+        document.addEventListener('play', function(e) {
+            var audios = document.getElementsByTagName('audio');
+            for (var i = 0; i < audios.length; i++) {
+                if (audios[i] != e.target) {
+                    audios[i].pause();
+                }
+            }
+        }, true);
+    </script>
+
+</body>
+</html>

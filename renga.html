@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth scroll-pt-32">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts for SMP | RG2BIM</title>
+    <link href="fonts/fonts.css" rel="stylesheet">
+    <script src="libs/tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121214',
+                        darkCard: '#1a1a1e',
+                        accentRevit: '#00d2ff',
+                        accentRenga: '#ff6b4a',
+                        accentPython: '#ffd43b',
+                        accentIfc: '#00f5d4',
+                    },
+                    fontFamily: { sans: ['Outfit', 'Inter', 'sans-serif'], mono: ['Fira Code', 'Courier New', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+<style>
+        .tab-active { background-color: #27272a; color: #ffffff; border-color: #3f3f46; }
+        :not(.dark) .tab-active { background-color: #e4e4e7; color: #18181b; border-color: #d4d4d8; }
+    </style>
+    <!-- Lucide Icons -->
+    <script src="libs/lucide.js"></script>
+</head>
+<body class="font-sans antialiased selection:bg-accentRevit/30 selection:text-white flex flex-col min-h-screen bg-zinc-50 dark:bg-darkBg text-zinc-900 dark:text-zinc-300">
+
+    <!-- ХЕДЕР -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-zinc-50/80 dark:bg-darkBg/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="w-20 h-20 flex items-center justify-center group-hover:scale-[0.98] transition-transform -ml-2">
+                    <img src="images/logo.png" alt="NR Logo" class="w-full h-full object-contain drop-shadow-md">
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-wider text-zinc-900 dark:text-white">RG2BIM</span>
+                    <span class="block text-3xs text-zinc-500 font-mono tracking-widest">// BY @0RinRU</span>
+                </div>
+            </a>
+
+            <!-- Навигационные вкладки -->
+            <nav class="hidden xl:flex space-x-1 bg-zinc-100 dark:bg-zinc-900/60 p-1 rounded-full border border-zinc-200 dark:border-zinc-800/50">
+                <a href="index.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">SMP Renga</a>
+                <a href="renga.html" class="px-4 py-2 text-sm font-medium rounded-full tab-active">Scripts for SMP</a>
+                <a href="python.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Python/VBA</a>
+                <a href="portal.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Portal RKV</a>
+                <a href="other.html" class="px-4 py-2 text-sm font-medium rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">Прочее</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-300 dark:border-zinc-700">
+                    <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                </button>
+                <a href="mailto:nruslan2@yandex.ru" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+
+            <!-- Мобильное Меню Кнопка -->
+            <div class="xl:hidden">
+                <button id="mobile-menu-btn" class="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное выпадающее меню -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-zinc-50 dark:bg-darkBg border-b border-zinc-200 dark:border-zinc-800/80 px-4 py-4 space-y-2">
+            <a href="index.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Главная</a>
+            <a href="revit.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">pyRevit Revit</a>
+            <a href="smp.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">SMP Renga</a>
+            <a href="renga.html" class="block w-full px-4 py-2 rounded-lg text-zinc-900 dark:text-white bg-zinc-200 dark:bg-zinc-800">Scripts for SMP</a>
+            <a href="python.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Python/VBA</a>
+            <a href="portal.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Portal RKV</a>
+            <a href="other.html" class="block w-full px-4 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white">Прочее</a>
+        </div>
+    </header>
+
+    <div class="h-20"></div>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Hero Секция -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+                <div class="lg:col-span-7">
+                    <span class="text-xs font-mono tracking-widest text-red-500 uppercase block mb-3">// Renga / SMP / Script / C#</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-zinc-900 dark:text-white mb-6">
+                        Scripts для SMP C#
+                    </h1>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg mb-8 max-w-2xl">
+                        Набор C# скриптов, выполняющихся на базе ScriptManagerPlugin (SMP). Автоматизируют рутинные операции в Renga.<br>Функционал плагинов может быть реализован через серверную часть.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://github.com/RG2BIM/Scripts_for_SMP" target="_blank" class="px-6 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold flex items-center gap-2 transition-all shadow-lg shadow-green-500/20">
+                            <i data-lucide="download" class="w-5 h-5"></i> Скачать
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 relative group neon-glow">
+                        <img src="images/renga_banner.png" alt="Scripts for SMP" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-zinc-950/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 p-3 rounded-lg">
+                            <span class="text-xs font-mono text-red-500 block">// Renga / SMP / Script / C#</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1">
+                <div class="sticky top-20 lg:top-28 z-30 py-4 lg:py-0 bg-zinc-50 dark:bg-darkBg lg:bg-transparent lg:dark:bg-transparent">
+                    <div class="bg-white dark:bg-darkCard border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-3 lg:p-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 lg:gap-2 no-scrollbar">
+                        <span class="hidden lg:block text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2">// Группы скриптов</span>
+                        <a href="#group-main-panel" class="whitespace-nowrap lg:whitespace-normal lg:block flex-shrink-0 text-sm text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors px-4 py-2 lg:px-0 lg:py-1.5 bg-zinc-100 dark:bg-zinc-900 lg:bg-transparent lg:dark:bg-transparent rounded-lg lg:rounded-none lg:border-l-2 border-transparent hover:border-red-500 lg:pl-3">Основная панель</a>
+                        <a href="#group-context-menu" class="whitespace-nowrap lg:whitespace-normal lg:block flex-shrink-0 text-sm text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors px-4 py-2 lg:px-0 lg:py-1.5 bg-zinc-100 dark:bg-zinc-900 lg:bg-transparent lg:dark:bg-transparent rounded-lg lg:rounded-none lg:border-l-2 border-transparent hover:border-red-500 lg:pl-3">Контекстное меню</a>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-3 space-y-12">
+                <section id="group-main-panel" class="space-y-6">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
+                        <span class="w-2.5 h-6 bg-red-500 rounded-full"></span>
+                        Основная панель
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.1. Присвоить Element ID</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Извлекает системные Renga ID объектов и записывает их в виде текста в пользовательское свойство для последующего экспорта.</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт перебирает ВСЕ объекты в модели и принудительно записывает их идентификатор Renga в свойство с именем "Element ID".
+									<br>
+									❗ Не путайте Renga ID с Уникальным идентификатором
+								</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.2. Присвоить IfcGUID</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Извлекает или генерирует IfcGUID каждого элемента Renga и записывает его в отдельное свойство.</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Значение записывается в свойство с точным именем "IfcGUID".</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.3. Автонумерация</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Гибкая автоматическая нумерация элементов модели по различным категориям с возможностью добавления префиксов и суффиксов.
+									<div class="flex flex-wrap gap-4 mt-4 mb-4">
+										<img src="images/renga_img_5.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Результат записывается в пользовательское свойство, которое вы укажете в интерфейсе. Поддерживается группировка — элементы с одинаковым значением базового параметра получат одинаковый номер.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.4. Именование осей</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Гибкое автоматическое переименование и сортировка координационных осей в соответствии с требованиями ГОСТ.
+									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_6.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает с осями на 3D Виде (в самой модели). Из-за архитектурных особенностей Renga API (оси не имеют 3D-геометрии), скрипт в фоновом режиме выгружает оси во временный IFC-файл в системную папку Temp для точного получения их геометрических координат (точек X, Y). Это позволяет математическому алгоритму безошибочно отличать горизонтальные оси от вертикальных (по дельте длины), а также сортировать их строго по порядку: слева-направо (для вертикальных) и снизу-вверх (для горизонтальных) независимо от порядка их создания или выделения. Новые имена записываются в системный параметр «Обозначение оси». Временный IFC-файл удаляется автоматически.
+								<br>Из алфавита строго исключаются недопустимые ГОСТом буквы (Ё, З, Й, О, Ч, Ъ, Ы, Ь).</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.5. Площадь квартир</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Автоматический расчет фактической площади квартир с учетом понижающих коэффициентов помещений (лоджии, балконы, террасы).
+									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_7.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт собирает все помещения модели и группирует их по номерам квартир (со встроенной защитой от слияния одинаковых номеров на разных этажах). На основе свойства «Тип помещения» скрипт по встроенному словарю (сохраняемому в файле ratio.json) определяет категорию (Жилое, Летнее, Прочее) и применяет соответствующий коэффициент (например, 0.5 для лоджии, 0.3 для балкона).
+								<br>• Для каждого помещения должны быть предусмотрены следующие свойства:
+								<br>• RNP_Коэффициент площади [Тип: Действенное число]
+								<br>• RNP_Площадь с коэффициентом [Тип: Действенное число]
+								<br>• RNP_Площадь квартиры общая  [Тип: Действенное число] (общая площадь с учетом понижающих коэффициентов летних помещений)
+								<br>• RNP_Площадь квартиры жилая  [Тип: Действенное число] (сумма только «Жилых комнат», спален и т.д.)
+								<br>• RNP_Площадь квартиры с лоджией и балконом без коэфф. [Тип: Действенное число] (полная геометрическая сумма без коэффициентов)
+								<br>• RNP_Площадь квартиры  [Тип: Действенное число] (основная площадь без учета летних помещений)
+								<br>• RNP_Число комнат [Тип: Целое]
+								<br>• RNP_Индекс помещения [Тип: Строка] (заполняется автоматически в формате отметка уровня_номер квартиры_номер комнаты)
+								<br>• RNP_Тип помещения [Тип: Целое]
+								<br>• RNP_ Номер квартиры [Тип: Целое]
+								<br>❗ Если данные свойства отсутствуют скрипт выдаст предупреждение.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.6. Принадлежность к помещению</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Анализ геометрии (BBox) для вычисления, в каком помещении физически находится элемент (дверь, окно, мебель и т.д.).
+									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_8.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт в фоновом режиме выгружает 3D-габариты (Bounding Box) элементов и точные 2D-полигоны помещений. Для определения принадлежности доступно 4 математических алгоритма на выбор:
+<br>• Exact 2D (Точный 2D-контур) — самый точный и рекомендуемый по умолчанию метод. Скрипт строит точный многоугольник помещения по его реальным вершинам (с учетом всех ниш и изгибов стен) и проверяет пересечение алгоритмом Ray-casting (испускания лучей). Учитывается также координата Z (помещение должно перекрывать объект по высоте).
+<br>• Full (Полностью внутри) — жесткое правило: габаритный 3D-контейнер элемента должен на 100% находиться внутри габаритов помещения.
+<br>• Center (Центр внутри) — достаточно, чтобы центральная точка объекта попадала в помещение. Отлично подходит для окон и дверей, которые установлены на границе в наружных стенах.
+<br>• Intersect (Частичное касание) — фиксирует принадлежность при любом физическом пересечении габаритов, даже если элемент сильно выступает за пределы комнаты.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.7. Экспорт в PDF</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Пакетный экспорт листов чертежей в формат PDF.
+									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_9.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт создает рядом с файлом проекта *.rnp новую папку с именем самого проекта [Имя проекта]. Каждый раздел чертежей экспортируется в эту папку в виде отдельного PDF-файла с именем формата [Имя проекта]_[Имя раздела].pdf.<br>Проект обязательно должен быть сохранен.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.8. Ведомости чертежей</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Автоматизирует сбор информации о чертежах проекта и формирует текстовую ведомость.
+									<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_10.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+									</div>
+								</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только с сохраненными проектами. Он создает папку с именем вашего проекта (в той же директории, где лежит файл *.rnp и внутри нее формирует текстовый файл [Имя проекта].txt.<br>В файл записывается шифр проекта, наименование, стадия и полный перечень основных комплектов чертежей.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.9. Замена шрифта текста</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Массовая замена настроек шрифта (семейство, размер, стиль) у элемента Текст на выбранных чертежах (листах).
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_11.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только с элементом Текст на чертеже. Он перебирает выделенные пользователем листы, находит все тексты и заменяет им параметры. *Примечание: шрифты внутри Спецификаций, Таблиц, Рамок (штампов) и Меток не заменяются из-за ограничений архитектуры Renga API.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.10. Свойства окон и дверей</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Скрипт для детализированного анализа заполнений проемов. Извлекает параметры геометрии, форму (например, «Прямоугольный проём», «Арочный проём») и выводит эту информацию.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_12.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Вся вычисленная информация выводится в специальное текстовое Окно Консоли.<br>Скрипт не перезаписывает свойства модели самостоятельно, а служит мощным инструментом диагностики параметров окон и дверей.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.11. Вывод стилей элементов</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Выгружает в текстовый файл полный список всех стилей, профилей и материалов, используемых в проекте (стили окон, труб, систем, арматуры и т.д.).
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_13.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Файл будет сохранен в ту же папку, где лежит файл проекта *.rnp, под именем [Имя проекта]_Стили.txt.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.12. Подсчет объектов</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Информационный скрипт, считающий точное количество элементов выбранной категории в модели или выборке.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_14.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Результат работы скрипта выводится в окно консоли.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.13. Показать ID файла</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Вывод уникальных идентификаторов текущего файла проекта и сессии.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_15.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> ID проект – это уникальный идентификатор проекта.
+<br>ID сессии – это уникальным идентификатором рабочей сессии, используется для работы с Renga Collaboration Server и задает имя для в файлах Журнала действия проекта.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.14. Выделение по IfcGUID</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Быстрый поиск и подсветка элементов модели по их глобальному уникальному идентификатору (IfcGUID).
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_16.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт позволяет найти в модели элемент по IfcGUID и произвести с ним следующие действия:
+<br>• Выделить элемент на 3D Виде.
+<br>• Скрыть элемент на 3D Виде.
+<br>• Изолировать элемент на 3D Виде.
+<br>❗ Не путайте IfcGUID, который имеется в IFC файлах модели с Renga ID и Уникальным идентификатором.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.15. Выделение по RengaID</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Поиск и выделение элементов по внутреннему системному идентификатору Renga (целое число).
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_17.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт позволяет найти в модели элемент по Renga ID и произвести с ним следующие действия:
+<br>• Выделить элемент на 3D Виде.
+<br>• Скрыть элемент на 3D Виде.
+<br>• Изолировать элемент на 3D Виде.
+<br>❗ Не путайте Renga ID с IfcGUID и Уникальным идентификатором.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.16. Управление уровнями</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Управление уровнями проекта (скрыть, показать, изолировать, выбрать, закрепить).
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_18.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт собирает все уровни модели в удобную таблицу. Позволяет массово или единично закреплять уровни от случайных изменений. Кнопки управления видимостью работают напрямую с активным 3D видом, скрывая или показывая физические объекты. Окно не блокирует работы программы Renga.
+<br>❗ Из-за ограничений Renga API редактирование отметки уровня заблокировано.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.17. Закреплённые 3D элементы</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Скрипт для удобного поиска и массового открепления зафиксированных объектов в 3D Виде.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_19.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт сканирует модель Renga и собирает все элементы со статусом Pinned. Данные выводятся в адаптивную таблицу с указанием ID, имени, категории на русском языке и уникального GUID.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.18. Диспетчер пользовательских свойств</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Комплексное управление пользовательскими свойствами проекта. Позволяет создавать новые свойства, массово назначать свойства различным категориям объектов, управлять галочкой экспорта в CSV, задавать формулы (выражения), а также сохранять и загружать все настройки через внешний файл CSV.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_20.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> В левом столбце («Свойства») отображаются все зарегистрированные в проекте свойства и их тип данных. Под списком расположены три кнопки:
+<br>• «Создать...» — добавить новое свойство нужного типа.
+<br>• «Переименовать» — изменить название уже существующего свойства.
+<br>• «Удалить» — полностью удалить свойство из проекта (ВНИМАНИЕ: это стирает все данные этого свойства у всех объектов).
+<br>В правом столбце («Категории Renga») производится управление привязкой выбранного свойства к категориям.
+<br>❗ Информационная галочка «Формула» (только для чтения) показывает истинное состояние из программы Renga и управлять ей нельзя. При вводе любого текста в столбец «Выражение» данная галочка автоматически ставится, но если удалить введенный текст, галочка не пропадет, так как Renga API сохранит пустое значение и физически не снимет настройку. 
+<br>Доступны функции «Экспорт в CSV» и «Импорт из CSV» для переноса всех свойств с учетом Выражений.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.19. Удалить все свойства проекта</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Глобальная очистка модели от абсолютно всех пользовательских свойств.</p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Функция полностью стирает все созданные ранее свойства, оставляя только встроенные системные параметры Renga.
+<br>❗ Действие необратимо.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.20. Групповое заполнение свойств</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Массовое назначение одинаковых значений пользовательских свойств у объектов в проекте.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_21.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт собирает абсолютно все объекты проекта и классифицирует их по системным категориям (Стена, Колонна, Окно, Дверь, Помещение, Труба и т.д.). Внутри каждой категории он дополнительно разделяет элементы по типам (стилям).</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.21. Проверка на дубликаты</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Поиск и удаление случайно скопированных друг в друга объектов (стен, перекрытий, колонн, окон, проемов и линий), которые завышают объемы материалов в сметах.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_22.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает в два этапа. Для физических 3D-объектов строятся точные 3D-габариты в памяти. Для элементов без своей экспортируемой геометрии (например, Проемов) скрипт анализирует и сравнивает все их параметры.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.22. Log-журналы Renga</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Быстрый просмотр, фильтрация и анализ журналов совместной работы проекта Renga (изменения объектов), логов работы приложения (AecApp.log) и логов сетевого сервера совместной работы (RengaServer.log) прямо внутри интерфейса Renga.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_23.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт считывает файлы логов в безопасном разделяемом режиме (FileShare.ReadWrite), что позволяет парсить логи в реальном времени параллельно с работой Renga и сервера, не блокируя запись в них.
+<br>Скрипт автоматически определяет SessionId текущего открытого проекта и сразу подгружает соответствующий лог-файл.
+<br>Форма открывается в немодальном floating-режиме с поддержкой растягивания на весь экран и масштабирования DPI, не блокируя работу в самой программе Renga.
+<br>Доступна возможность выделять элементы согласно записям в журнале.</div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 1.23. Удаление Log-файлов</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Очистка временных лог-файлов сессий Renga (*.log) и файлов индивидуальных пользовательских настроек проектов (*.json) для освобождения дискового пространства от устаревших данных.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_24.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает с локальной папкой пользователя AppData\Local\Renga Software\Renga Professional (а также стандартной Renga). При сканировании скрипт пропускает и защищает от удаления лог-файл текущей активной сессии ([SessionID].log) и файл настроек открытого в данный момент проекта ([ProjectGUID].json).
+<br>❗ Удаление выполняется безвозвратно (в обход Корзины), а файлы, занятые или заблокированные другими процессами в данный момент, автоматически и безопасно пропускаются.</div>
+                            </div>
+                        </div>
+</div></section>
+                <section id="group-context-menu" class="space-y-6">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
+                        <span class="w-2.5 h-6 bg-red-500 rounded-full"></span>
+                        Контекстное меню
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 2.1. Показать GUID</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Отобразить Renga ID, Уникальный идентификатор и IfcGUID для выбранного элемента.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_26.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только на 3D Виде и доступен только при выбранном элементе.
+<br>❗При выборе нескольких элементов отобразит данные самого первого элемента по Renga ID.</div>
+                            </div>
+                        </div>
+</div></section>
+</div></div>
+    </main>
+
+    <!-- ФУТЕР -->
+        <footer class="bg-zinc-50 dark:bg-darkBg border-t border-zinc-200 dark:border-zinc-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-zinc-500 text-xs font-mono">// &copy; 2026 RG2BIM. @0RinRU</span>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-zinc-500 dark:text-zinc-400 text-xs font-mono">
+                <a href="index.html" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Главная</a>
+                <a href="revit.html" class="hover:text-accentRevit transition-colors">pyRevit Revit</a>
+                <a href="smp.html" class="hover:text-accentRenga transition-colors">SMP Renga</a>
+                <a href="renga.html" class="text-red-500 transition-colors">Scripts for SMP</a>
+                <a href="python.html" class="hover:text-accentPython transition-colors">Python/VBA</a>
+                <a href="portal.html" class="hover:text-zinc-800 dark:hover:text-zinc-500 transition-colors">Portal RKV</a>
+                <a href="other.html" class="hover:text-accentIfc transition-colors">Прочее</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-zinc-900/90 dark:bg-black/90 hidden flex items-center justify-center p-4 cursor-pointer backdrop-blur-sm transition-opacity" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl border border-zinc-700">
+    </div>
+
+    <script>
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+    
+        if(window.lucide) { lucide.createIcons(); }
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    document.getElementById('menu-icon').setAttribute('data-lucide', 'x');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    document.getElementById('menu-icon').setAttribute('data-lucide', 'menu');
+                }
+                if(window.lucide) { lucide.createIcons(); }
+            });
+        }
+        
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        function updateThemeIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.setAttribute('data-lucide', 'sun');
+            } else {
+                themeIcon.setAttribute('data-lucide', 'moon');
+            }
+            if(window.lucide) { lucide.createIcons(); }
+        }
+        
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.theme = 'dark';
+                } else {
+                    localStorage.theme = 'light';
+                }
+                updateThemeIcon();
+            });
+            updateThemeIcon();
+        }
+    </script>
+</body>
+</html>
