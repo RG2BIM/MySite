@@ -138,6 +138,7 @@
                         <span class="hidden lg:block text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2">// Группы скриптов</span>
                         <a href="#group-main-panel" class="whitespace-nowrap lg:whitespace-normal lg:block flex-shrink-0 text-sm text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors px-4 py-2 lg:px-0 lg:py-1.5 bg-zinc-100 dark:bg-zinc-900 lg:bg-transparent lg:dark:bg-transparent rounded-lg lg:rounded-none lg:border-l-2 border-transparent hover:border-red-500 lg:pl-3">Основная панель</a>
                         <a href="#group-context-menu" class="whitespace-nowrap lg:whitespace-normal lg:block flex-shrink-0 text-sm text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors px-4 py-2 lg:px-0 lg:py-1.5 bg-zinc-100 dark:bg-zinc-900 lg:bg-transparent lg:dark:bg-transparent rounded-lg lg:rounded-none lg:border-l-2 border-transparent hover:border-red-500 lg:pl-3">Контекстное меню</a>
+                        <a href="#group-action-menu" class="whitespace-nowrap lg:whitespace-normal lg:block flex-shrink-0 text-sm text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors px-4 py-2 lg:px-0 lg:py-1.5 bg-zinc-100 dark:bg-zinc-900 lg:bg-transparent lg:dark:bg-transparent rounded-lg lg:rounded-none lg:border-l-2 border-transparent hover:border-red-500 lg:pl-3">Меню Действия</a>
                     </div>
                 </div>
             </div>
@@ -397,6 +398,35 @@
 <div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_26.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
                                 <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает только на 3D Виде и доступен только при выбранном элементе.
 <br>❗При выборе нескольких элементов отобразит данные самого первого элемента по Renga ID.</div>
+                            </div>
+                        </div>
+</div></section>
+                <section id="group-action-menu" class="space-y-6">
+                    <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
+                        <span class="w-2.5 h-6 bg-red-500 rounded-full"></span>
+                        Контекстное меню
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 3.1. Сопряжение</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Сопряжение через объединение или скругление двух объектов.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_27.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт работает с любыми линейными объектами Renga, имеющими 2D или 3D базовую линию (стены, балки, ограждения, 3D-линии, линии чертежа).
+<br>Новый (соединительный) объект полностью наследует свойства — привязку к уровню, стиль, все материалы и пользовательские/системные параметры — от того из двух выделенных объектов, который был создан в модели раньше (имеет меньший Renga ID).</div>
+                            </div>
+                        </div>
+						<div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors mb-2">Скрипт 3.2. Копирование свойств</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-2">Копировать свойства с выбранного элемента на другие той же категории.
+<div class="flex flex-wrap gap-4 mt-4 mb-4"><img src="images/renga_img_28.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div></p>
+                                <div class="text-xs text-zinc-600 dark:text-zinc-400 mt-2 font-mono"><span class="text-red-500">Детали:</span> Скрипт запускается с Панели действий при одном выбранном элементе-источнике.
+<br>Копирование применяется строго к элементам той же категории (например, свойства Стены скопируются только на другие Стены).
+<br>В скрипте реализована функция выбора режима переноса:
+<br>• Все данные.
+<br>• Только системные параметры.
+<br>• Только пользовательские свойства.</div>
                             </div>
                         </div>
 </div></section>
