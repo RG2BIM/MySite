@@ -438,6 +438,31 @@
                         </div></div>
                             </div>
                         </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 1.20. Проверка IDS IFC.</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Позволяет проверять модель на требования IDS без выгрузки в IFC.
+<br><br><strong>Расположение:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_163.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+</div><strong>Интерфейс:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_164.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
+                                <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
+                            <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
+<br>Плагин собирает все элементы либо с текущего активного вида, либо с выбранного пользователем 3D-вида. При этом из проверки автоматически исключаются системные и вспомогательные категории.
+<br>Далее происходит обработка и проверка элементов модели по правилам: 
+<br>• Плагин читает IDS файл (XML) с требованиями к параметрам.
+<br>• Плагин читает файл сопоставления (TXT), который подсказывает скрипту, как параметры из спецификации IDS называются внутри Revit.
+<br>В результате генерируется Excel-документ (.xlsx). Для удобства фильтрации в режимах проверки по IDS каждая найденная ошибка выводится в отдельную строку.
+<br>Пользователю доступно 6 режимов проверки:
+<br>1. Проверка заполнения параметров IFC классов ("Экспорт в IFC как" и "IfcExportAs")
+<br>2. Проверка соответствия значений параметров IFC классов
+<br>3. Наличие параметров из требований IDS
+<br>4. Заполненность параметров из требований IDS
+<br>5. Соответствие значений требованиям IDS
+<br>6. Полная проверка (все пункты)
+                        </div></div>
+                            </div>
+                        </div>
 </div></section>
                 <section id="group-вид" class="space-y-6">
                     <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
