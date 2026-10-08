@@ -574,6 +574,20 @@
                         </div></div>
                             </div>
                         </div>
+						<div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 1.27. Проверка параметров</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Проверка наличия и заполненности параметров модели по категориям.
+<br><br><strong>Расположение:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_190.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+</div><strong>Интерфейс:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_191.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
+                                <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
+                            <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
+Для каждой категории плагин позволяет задать набор параметров, которые будут проверяться на наличие в модели и введенных данных.
+                        </div></div>
+                            </div>
+                        </div>
 </div></section>
                 <section id="group-вид" class="space-y-6">
                     <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
@@ -1040,15 +1054,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
                             <div>
-                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 7.1. Расположить марку помещения</h3>
-                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Позволяет создать или переместить марку помещения по центру помещения или в правом нижнем углу помещения.
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 7.1. Расположить марку помещения и пространств</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Позволяет создать или переместить марку помещения/пространства по центру помещения/пространства или в правом нижнем углу помещения/пространства.
 <br><br><strong>Расположение:</strong>
 <div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_106.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
 </div><strong>Интерфейс:</strong>
 <div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_107.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
                                 <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
                             <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
-                            Опция «Создавать отсутствующие марки выбранного типа» позволяет автоматически создавать марки для помещений, где они отсутствуют.Таким образом Вы можете не использовать родной инструмент Revit установить марку для помещения, а сразу воспользоваться планигоном!<br>Расположение марки доступно в следующих вариантах:<br>• Центр – марка будет выровнена по центру помещения.<br>• Угол (правый нижний) – марка будет размещена в правом нижнем углу помещения.
+Опция «Создавать отсутствующие марки выбранного типа» позволяет автоматически создавать марки для помещений, где они отсутствуют.Таким образом Вы можете не использовать родной инструмент Revit установить марку для помещения/пространства, а сразу воспользоваться планигоном!
+<br>Расположение марки доступно в следующих вариантах:
+<br>• Центр – марка будет выровнена по центру помещения/пространства.
+<br>• Угол (правый нижний) – марка будет размещена в правом нижнем углу помещения/пространства.
                         </div></div>
                             </div>
                         </div>
@@ -1374,6 +1391,26 @@
                                 <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
                             <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
                             Выбираются только IFC элементы, а список замены будет содержать только семейства той же категории, что и выбранный IFC элемент.
+                        </div></div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 8.5. Создать Пространства</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Автоматически устанавливает границу помещения для связанного файла, создает пространства по контурам помещений и переносит в них номер и имя.
+<br><br><strong>Расположение:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_192.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+</div><strong>Интерфейс:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_193.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
+                                <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
+                            <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
+1. У выбранной связанного файла плагин ставит галочку у параметра "Граница помещения"
+<br>2. Сканирует связанный файл и выбирает из него только те помещения, которые:
+<br>•	размещены в модели (имеют координаты).
+<br>•	являются замкнутыми (их параметр Площадь > 0).
+<br>3. Расставляет пространства в местах где были найдены помещения в связанном файле.
+<br>4. В расставленных пространствах присваивает Имя, Номер и переносит высотные привязки от исходного помещения.
+
                         </div></div>
                             </div>
                         </div>
