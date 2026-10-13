@@ -588,6 +588,20 @@
                         </div></div>
                             </div>
                         </div>
+						<div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 1.28. Проверка привязки к этажу</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Проверка корректности привязки элементов модели к уровням этажей.
+<br><br><strong>Расположение:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_194.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+</div><strong>Интерфейс:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_195.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
+                                <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
+                            <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
+Выводит окно со статистиком правильного расположения элементов с привязкой уровня и перечень элементов с топологическими коллизиями (несоответствие уровня привязки и уровня разрешения).
+                        </div></div>
+                            </div>
+                        </div>
 </div></section>
                 <section id="group-вид" class="space-y-6">
                     <h2 class="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800/60 pb-3">
@@ -726,6 +740,21 @@
                                 <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
                             <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
                             Помимо данных о помещении можно включить функцию записать список помещений, в которых встречаются данные элементы, сгруппированный по параметру.<br>❗Если элементы инженерных систем находятся в отдельной модели, выберите связанную архитектурную модель как источник помещений.
+                        </div></div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-darkCard p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-accentRevit/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <h3 class="text-lg font-bold text-zinc-900 dark:text-white group-hover:text-accentRevit transition-colors mb-2">Плагин 3.3. Запись из Модели Зоны</h3>
+                                <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4 leading-relaxed">Записать значения параметров из Моделей Зоны в 3D-элементы внутри или пересекающие зону.
+<br><br><strong>Расположение:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_196.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)">
+</div><strong>Интерфейс:</strong>
+<div class="flex flex-wrap gap-4 mt-4 mb-2"><img src="images/revit_img_197.png" class="w-24 h-24 object-contain bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 cursor-pointer hover:opacity-80 transition-opacity shrink-0" onclick="openLightbox(this.src)"></div>
+                                <div class="flex flex-wrap gap-2"><div class="text-xs text-zinc-600 dark:text-zinc-500 mt-1 border-t border-zinc-200 dark:border-zinc-800/50 pt-2">
+                            <strong class="text-accentRevit font-semibold block mb-1">Детали:</strong>
+❗ В качестве зон плагин находит в проекте элементы категории «Обобщенные модели», у которых в имени семейства содержится слова «Модель Зоны» (поиск выполняется без учета регистра).
+<br>Если один элемент попадает сразу в несколько Моделей Зоны, значения из этих зон объединяются и записываются через запятую (без дублирования одинаковых значений).
                         </div></div>
                             </div>
                         </div>
